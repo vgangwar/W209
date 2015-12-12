@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Visualizing Washington Metro Rail Passenger Ridership</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/one-page-wonder.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="//d3js.org/queue.v1.min.js" charset="utf-8"></script>
+    <script src="//online.tableau.com/javascripts/api/tableau-2.0.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="axis.css">
+    <link rel="stylesheet" type="text/css" href="chordDiagram.css">
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Home</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#textChordDiagram">Data Exploration</a>
+                    </li>
+                    <li>
+                        <a href="#textSmallMultiples">Station Busyness</a>
+                    </li>
+                    <li>
+                        <a href="#textTotalTraffix">RiderShip comparison</a>
+                    </li>
+                    <li>
+                        <a href="#textTableauRailMap">Rail Map</a>
+                    </li>
+                    <li>
+                        <a href="#textTableauRevenueMap">Revenue</a>
+                    </li>
+                    <li>
+                        <a href="#textTableauMigrationsMap">Migration</a>
+                    </li>
+                    <li>
+                        <a href="#contact">Team</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Full Width Image Header -->
+    <header>
+        <div class="headline">
+            <div class="container">
+            <img class="featurette-image img-circle img-responsive pull-right" src="image.png">
+                <h2>Washington Metro rail</h2>
+                <p class="lead">Washington Metropolitan Area Transit Authority (WMATA) regularly publishes data on how customers use the system. The <a href="http://planitmetro.com/2012/10/31/data-download-metrorail-ridership-by-origin-and-destination/">dataset</a> we use provides mean passenger counts between stations, by time period, for May 2012. Commuters and WMATA administrators can use this data to answer questions such as:<p>
+                <h4>Where do passengers entering at one station go?<br>
+                    Where do late-night riders enter the system?<br>
+                    How does Weekend ridership differ from Weekday?<br>
+                    Which stations are most lively at midday and evening hours?</h4>
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <hr class="featurette-divider">
+
+        <!-- First Featurette -->
+        <div class="featurette" id="textChordDiagram">
+            <h2 class="featurette-heading"><br>
+                <span class="text-muted">Data Exploration</span>
+            </h2>
+            <p class="lead">We have used a combination of a Chord Diargam and Bar charts for data exploration. Based on the selected time period through radio buttons, the sorted arc represents the total outgoing traffic per station. Mouseover both arcs and sorted chords provides further information. The bar chart below the chord is controlled by mouseover the arcs. For a selected station in chord the bar chart provides ridership counts from/to all other stations<br>
+            A quick interaction with the visualization shows that during Weekdays AM Peak hours, Farragut West and Farragut North get the most incoming traffic from almost all other stations
+            </p>
+        </div>
+        <div id="divChordDiagram"></div>
+
+        <hr class="featurette-divider">
+
+        <!-- Second Featurette -->
+        <div class="featurette" id="textSmallMultiples">
+            <h2 class="featurette-heading"><br>
+                <span class="text-muted">Station Busyness</span>
+            </h2>
+            <p class="lead">In this small multiples layout we are exploring the pattern of busyness of stations across all the time periods. User can filter data based on the lines<br>
+            At a glance we can see that even though the total traffic volume per station is different, but the shape of the traffix distribution is similar across stations 
+            </p>
+        </div>
+        <div id="divSmallMultiplesCheckBox"></div>
+        <div id="divSmallMultiples"></div>
+
+        <hr class="featurette-divider">
+
+        <!-- Third Featurette -->
+        <div class="featurette" id="textTotalTraffix">
+            <h2 class="featurette-heading"><br>
+                <span class="text-muted">RiderShip comparison</span>
+            </h2>
+            <p class="lead">This paired bar chart shows ridership quantities by station, sorted with the highest-traffic stations at the top. Selecting a station or stations adjusts the data in the corresponding chart. For instance, Union Station is the second highest in terms of both entries and exits. However, the highest connecting station to Union Station is Farragut North, not one of the other top five stations. This paired bar chart allows the user to explore the relationships between stations due to its interactive data binding. As with the Migration Map, data points can be selected individually or by selecting a pointer option <grey triangle below the house, OR insert pic of pointer menu> and selecting a group of stations at once. To de-select, simply click on an empty part of the chart.
+            </p>
+        </div>
+        <div id="divTotalTraffic" align="center"></div>
+
+        <hr class="featurette-divider">
+
+        <!-- Third Featurette -->
+        <div class="featurette" id="textTableauRailMap">
+            <h2 class="featurette-heading"><br>
+                <span class="text-muted">Rail Map</span>
+            </h2>
+            <p class="lead">The following map of the subway system provides an interactive version of the familiar subway map, showing revenue data on mouse-overs. This map takes advantage of Tableau’s custom mapping features, using relative coordinates to map data points onto a .png, rastor graphics background map. This map allows the user to explore the raw revenue data, with the familiar map as a point of reference.</p>
+        </div>
+        <div id="divTableauRailMap" align="center"></div>
+
+        <hr class="featurette-divider">
+
+        <!-- Third Featurette -->
+        <div class="featurette" id="textTableauRevenueMap">
+            <h2 class="featurette-heading"><br>
+                <span class="text-muted">Revenue</span>
+            </h2>
+            <p class="lead">The following map uses the same data as the Rail Map, but instead projects it onto a standard geographical background, using revenue and ridership quantity to generate a pseudo-heatmap. Operating on the assumption that riders entering a particular station originate from locations evenly dispersed around that station, this map quickly shows which geographical regions of the city account for subway revenue at different time periods.</p>
+        </div>
+        <div id="divTableauRevenueMap" align="center"></div>
+
+        <hr class="featurette-divider">
+
+        <!-- Third Featurette -->
+        <div class="featurette" id="textTableauMigrationsMap">
+            <h2 class="featurette-heading"><br>
+                <span class="text-muted">Migration</span>
+            </h2>
+            <p class="lead">This map creates a side-by-side comparison of entry and exit ridership, respectively. The two maps are bound, so selecting data on one map updates the corresponding map and shows that data subset, until unselected. Data may be selected by clicking on the station or by selecting a pointer option <grey triangle below the house, OR insert pic of pointer menu> and selecting a group of stations at once. To de-select, simply click on an empty part of the map.</p>
+        </div>
+        <div id="divTableauMigrationsMap" align="center"></div>
+
+        <hr class="featurette-divider">
+
+        <!-- Third Featurette -->
+        <div class="featurette" id="contact">
+            <h2 class="featurette-heading"><br>
+                <span class="text-muted">The Team</span>
+            </h2>
+            <p class="lead">
+                <a href="http://www.ischool.berkeley.edu/people/students/vineetgangwar">Vineet Gangwar</a><br>
+                <a href="http://www.ischool.berkeley.edu/people/students/denisvrdoljak">Denis Vrdoljak</a><br>
+                <a href="http://www.ischool.berkeley.edu/people/students/jiyan">Ji Yan</a>
+            </p>
+        </div>
+
+        <hr class="featurette-divider">
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="chordDiagram.js" charset="utf-8"></script>
+    <script src="smallMultiples.js" charset="utf-8"></script>
+    <script src="tableau.js" charset="utf-8"></script>
+</body>
+
+</html>
